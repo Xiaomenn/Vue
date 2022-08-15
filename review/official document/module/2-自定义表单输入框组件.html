@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- <my-msg v-model="message"></my-msg> -->
+    <my-msg :value="message" @input="message=$event"></my-msg>
+    <p>message: {{message}}</p>
+
+    <!-- <input v-model="message"> -->
+    <input :value="message" @input="message=$event.target.value">
+
+    <!-- 另一种实现v-model的方式：可能将value用于别的地方 -->
+    <!-- <base-checkbox v-model="lovingVue"></base-checkbox> -->
+    <p></p>
+    <base-checkbox :checked="lovingVue" @change="lovingVue=$event"></base-checkbox>
+    <p>lovingVue: {{lovingVue}}</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: '自定义表单输入框组件',
+        lovingVue: true
+      },
+      components: {
+        myMsg: {
+          template: `<input type="text" @input="$emit('input', $event.target.value)">`,
+        },
+        baseCheckbox: {
+          // longValue会传入checked这个属性，而且绑定的事件为change
+          model: {
+            event: 'change',
+            prop: 'ckecked'
+          },
+          template: `<input type="checkbox" @change="$emit('change', $event.target.checked)">`,
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

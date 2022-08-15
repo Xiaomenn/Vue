@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <div id="app">
+    <son>
+      <!-- <p>我是父组件替换插槽的内容</p> -->
+      <template v-slot:default="slotProps">
+        我是替换son组件插槽的内容
+        <p>给子组件的绑定的属性: {{slotProps}}</p>
+      </template>
+    </son>
+
+    <!-- 当被提供的内容只有默认插槽的时候: -->
+    <son v-slot="slotProps">
+      我是替换son组件插槽的内容
+      <p>给子组件的绑定的属性: {{slotProps}}</p>
+    </son>
+  </div>
+
+  <template id="son">
+    <div>
+      <h2>我是{{name}}</h2>
+      <slot :uname="name">我是son插槽默认内容</slot>
+    </div>
+  </template>
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        title: 'hello world'
+      },
+      components: {
+        son: {
+          template: `#son`,
+          data() {
+            return {
+              name: 'son'
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

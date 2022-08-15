@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .custom-appear-class,
+    .custom-appear-to-class {
+      font-size: 50px !important;
+    }
+
+    .custom-appear-active-class {}
+  </style>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <div id="app">
+    <button v-on:click="show = !show">
+      Toggle
+    </button>
+    <transition appear appear-class="custom-appear-class" appear-to-class="custom-appear-to-class"
+      appear-active-class="custom-appear-active-class" v-on:before-appear="customBeforeAppearHook"
+      v-on:appear="customAppearHook" v-on:after-appear="customAfterAppearHook"
+      v-on:appear-cancelled="customAppearCancelledHook">
+      <p v-if="show">hello world</p>
+    </transition>
+  </div>
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        show: true
+      },
+      methods: {
+        customBeforeAppearHook() {
+          console.log('before-appear');
+        },
+        customAppearHook() {},
+        customAfterAppearHook() {},
+        customAppearCancelledHook() {}
+      }
+    })
+  </script>
+</body>
+
+</html>

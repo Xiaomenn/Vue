@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <div id="app">
+    <!-- <base-input @focus="onFocus" v-model="value" label="子标签"></base-input> -->
+    <base-input @focus="onFocus" :value="value" label="子标签" @input="value=$event"></base-input>
+    <p>value: {{value}}</p>
+  </div>
+
+  <template id="baseInput">
+    <label>
+      {{label}}
+      <p></p>
+      <input type="text" v-bind="$attrs" :value="value" v-on="inputListeners"
+        @input="$emit('input', $event.target.value)">
+    </label>
+  </template>
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        value: 'hello world'
+      },
+      methods: {
+        onFocus() {
+          console.log('focusing......');
+        }
+      },
+      components: {
+        baseInput: {
+          // 子组件不会从父组件上继承prop重没指定的属性(不包括class style)
+          inheritAttrs: false,
+          template: `#baseInput`,
+          props: ['value', 'label'],
+          created() {
+            console.log(this.$listeners);
+          },
+          computed: {
+
+            inputListeners() {
+              const vm = this
+              return {
+                // 父级传来的事件
+                ...vm.$listeners,
+                //这里添加一些自定义事件(或者覆盖父级传来的事件)
+                keyup() {
+                  console.log('key up...');
+                },
+                input(event) {
+                  vm.$emit('input', event.target.value)
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
