@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <div id="app">
+    <my-input v-model="value"></my-input>
+    <my-input :value="value" @input="value=$event"></my-input>
+    <p>value:{{value}}</p>
+  </div>
+
+  <script>
+    Vue.component('my-input', {
+      props: ['value'],
+      render: function(createElement) {
+        const self = this
+        return createElement('input', {
+          domProps: {
+            value: this.value
+          },
+          on: {
+            input(event) {
+              self.$emit('input', event.target.value)
+            }
+          }
+        })
+      },
+    })
+
+    const app = new Vue({
+      el: '#app',
+      data: {
+        value: '崔帆'
+      },
+    })
+  </script>
+</body>
+
+</html>
